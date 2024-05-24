@@ -1,9 +1,9 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import { toast } from "react-hot-toast";
+import axios from "axios";
 
 export const AuthContext = createContext();
 
-// eslint-disable-next-line react-refresh/only-export-components
 export const useAuthContext = () => {
   return useContext(AuthContext);
 };
@@ -16,11 +16,23 @@ export const AuthContextProvider = ({ children }) => {
     const checkUserLoggedIn = async () => {
       setLoading(true);
       try {
-        const res = await fetch("/api/auth/check", { credentials: "include" });
-        const data = await res.json();
-        setAuthUser(data.user); // null or authenticated user object
+        const token = localStorage.getItem("token");
+        console.log("Token from localStorage:", token);
+        const res = await axios.get("http://localhost:5000/users/check", {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        });
+        const data = res.data;
+        setAuthUser(data);
       } catch (error) {
-        toast.error(error.message);
+        if (error.response && error.response.status === 401) {
+          toast.error("Not authorized. Please log in.");
+          window.location.href = "http://localhost:5000/users/login";
+        } else {
+          toast.error(error.message);
+        }
+        setAuthUser(null);
       } finally {
         setLoading(false);
       }

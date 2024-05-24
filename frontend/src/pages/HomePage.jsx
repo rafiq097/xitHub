@@ -1,22 +1,23 @@
 import { useCallback, useEffect, useState } from "react";
 import toast from "react-hot-toast";
 
-import { SideBar, Search, SortRepos, Spinner, Repo, Repos, ProfileInfo, Logout, LikeProfile } from "../components/index.js";
+import ProfileInfo from "../components/ProfileInfo";
+import Repos from "../components/Repos";
+import Search from "../components/Search";
+import SortRepos from "../components/SortRepos";
+import Spinner from "../components/Spinner";
 
-
-const HomeRoute = () => {
+const HomePage = () => {
 	const [userProfile, setUserProfile] = useState(null);
 	const [repos, setRepos] = useState([]);
 	const [loading, setLoading] = useState(false);
 
 	const [sortType, setSortType] = useState("recent");
 
-	const getUserProfileAndRepos = useCallback(async (username = "rafiq097") => {
+	const getUserProfileAndRepos = useCallback(async (username) => {
 		setLoading(true);
 		try {
-			
-			// const res = await fetch(`/api/users/profile/${username}`);
-			const res = await fetch(`https://api.github.com/users/${username}`);
+			const res = await fetch(`https://api.github.com/uesrs/${username}`);
 			const { repos, userProfile } = await res.json();
 
 			repos.sort((a, b) => new Date(b.created_at) - new Date(a.created_at)); //descending, recent first
@@ -76,4 +77,4 @@ const HomeRoute = () => {
 		</div>
 	);
 };
-export default HomeRoute;
+export default HomePage;

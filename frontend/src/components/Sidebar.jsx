@@ -7,8 +7,9 @@ import { MdEditDocument } from "react-icons/md";
 import Logout from "./Logout";
 import { useAuthContext } from "../context/AuthContext";
 
-const SideBar = () => {
+const Sidebar = () => {
 	const { authUser } = useAuthContext();
+	// const {authUser} = false;
 
 	return (
 		<aside
@@ -65,12 +66,13 @@ const SideBar = () => {
 				)}
 
 				{authUser && (
-					<div className='flex flex-col gap-2 mt-auto'>
-						<Logout />
+					<div 
+					className='p-1.5 focus:outline-nones transition-colors duration-200 rounded-lg hover:bg-gray-800'>
+					<Logout />
 					</div>
 				)}
 			</nav>
 		</aside>
 	);
 };
-export default SideBar;
+export default Sidebar;
