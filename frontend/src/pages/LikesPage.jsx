@@ -11,21 +11,19 @@ const LikesPage = () => {
     const getLikes = async () => {
       const token = localStorage.getItem("token");
       try {
-        const res = await axios.post(
-          `http://localhost:5000/users/likes/`,
-          {},
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
-        const data = await res.json();
+        const res = await axios.get(`http://localhost:5000/users/likes`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        console.log(res);
+        
+        const data = res.likedProfiles;
         if (data.error) throw new Error(data.error);
 
-        setLikes(data.likedBy);
-      }
-	  catch (error) {
+        setLikes(data.likedProfiles);
+      } catch (error) {
         toast.error(error.message);
       }
     };
@@ -44,12 +42,6 @@ const LikesPage = () => {
             <th scope="col" className="px-6 py-3">
               Username
             </th>
-            <th scope="col" className="px-6 py-3">
-              Date
-            </th>
-            <th scope="col" className="px-6 py-3">
-              Action
-            </th>
           </tr>
         </thead>
         <tbody>
@@ -64,22 +56,10 @@ const LikesPage = () => {
                 scope="row"
                 className="flex items-center px-6 py-4 whitespace-nowrap "
               >
-                <img
-                  className="w-10 h-10 rounded-full"
-                  src={user.avatarUrl}
-                  alt="User Avatar"
-                />
                 <div className="ps-3">
                   <div className="text-base font-semibold">{user.username}</div>
                 </div>
               </th>
-              <td className="px-6 py-4">{formatDate(user.likedDate)}</td>
-              <td className="px-6 py-4">
-                <div className="flex items-center">
-                  <FaHeart size={22} className="text-red-500 mx-2" />
-                  Liked your profile
-                </div>
-              </td>
             </tr>
           ))}
         </tbody>

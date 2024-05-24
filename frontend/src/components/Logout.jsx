@@ -11,13 +11,16 @@ const Logout = () => {
 			const res = await axios.get("http://localhost:5000/users/logout");
 			const data = res.data;
 			localStorage.removeItem("token");
-			console.log(data);
+			console.log("Logout data", data);
 			setAuthUser(null);
 			toast.success("Logged Out Successfully!");
-			window.location.href = process.env.CLIENT_BASE_URL;
-		} catch (error) {
+		}
+		catch (error) {
 			console.log(`In Logout Error: ${error.message}`);
 			toast.error(error.message);
+		}
+		finally{
+			window.location.href = "http://localhost:5173";
 		}
 	};
 

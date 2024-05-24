@@ -12,6 +12,9 @@ const LoginPage = () => {
 			if (response.status != 200) {
 				toast.error("Failed to Login. Please try again");
 			}
+            if(response.status === 400)
+                toast.error("Invalid credentials");
+                
 			const data = response.data;
 			localStorage.setItem('token', data.token);
             toast.success("Login Successful...");

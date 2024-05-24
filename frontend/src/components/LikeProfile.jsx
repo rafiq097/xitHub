@@ -3,18 +3,22 @@ import toast from "react-hot-toast";
 import axios from "axios"; // Ensure axios is imported
 import { useAuthContext } from "../context/AuthContext";
 
-const LikeProfile = ({ userProfile }) => {
+const LikeProfile = ( {userProfile} ) => {
 	const { authUser } = useAuthContext();
+	console.log('LikeProfile.userProfile', userProfile);
 
 	const handleLikeProfile = async () => {
 		const token = localStorage.getItem("token");
 		try {
-			const res = await axios.post(`http://localhost:5000/users/like/${userProfile.html_url}`, {}, {
+			console.log(userProfile.userProfile.userProfile.login);
+			const res = await axios.post(`http://localhost:5000/users/like/${userProfile.userProfile.userProfile.login}`, {username : userProfile.userProfile.userProfile.login, userProfile: userProfile.userProfile.userProfile}, {
 				headers: {
 					Authorization: `Bearer ${token}`,
 				},
 			});
-			
+			if(res.status === 400)
+				toast.error("User already liked");
+				
 			const data = res.data;
 
 			if (data.error) {
@@ -27,7 +31,7 @@ const LikeProfile = ({ userProfile }) => {
 		}
 	};
 
-	if (!authUser) return null;
+	// if (!authUser) return null;
 
 	return (
 		<button

@@ -7,7 +7,11 @@ import Search from "../components/Search";
 import SortRepos from "../components/SortRepos";
 import Spinner from "../components/Spinner";
 
+import { useAuthContext } from "../context/AuthContext";
+
 const HomePage = () => {
+	const { authUser } = useAuthContext();
+
 	const [userProfile, setUserProfile] = useState(null);
 	const [repos, setRepos] = useState([]);
 	const [loading, setLoading] = useState(false);
@@ -74,7 +78,9 @@ const HomePage = () => {
 		setSortType(sortType);
 		setRepos([...repos]);
 	};
-
+	if(!authUser) 
+		return null;
+		
 	return (
 		<div className='m-4'>
 			<Search onSearch={onSearch} />

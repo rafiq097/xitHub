@@ -91,8 +91,8 @@ export const getUserProfileAndRepos = async (req, res) => {
 export const getLikes = async (req, res) => {
     try
     {
-        const user = await User.findById(req.user._id.toString());
-        res.status(200).json({ likedBy: user.likedBy });
+        const user = await User.findById(req.user.id);
+        res.status(200).json({ likedBy: user.likedProfiles });
     }
     catch (error){
         res.status(500).json({ error: error.message });
@@ -102,16 +102,19 @@ export const getLikes = async (req, res) => {
 export const likeProfile = async (req, res) => {
     try {
         const { username } = req.params;
-        const user = await User.findById(req.user._id.toString());
+        console.log("username" , username);
+        console.log("req user", req.user);
 
+        const user = await User.findById(req.user.id);
+        console.log(user);
         if (user.likedProfiles.includes(username)) {
-            return res.status(400).json({ error: "User already liked" });
+            return res.status(400).json({ message: "User already liked" });
         }
 
         user.likedProfiles.push(username);
 
         await user.save();
-
+        console.log(user);
         res.status(200).json({ message: "User liked" });
     } catch (error) {
         res.status(500).json({ error: error.message });
