@@ -11,7 +11,7 @@ export const useAuthContext = () => {
 export const AuthContextProvider = ({ children }) => {
   const [authUser, setAuthUser] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [triedToCheck, setTriedToCheck] = useState(false);
+  const [check, setCheck] = useState(false);
 
   useEffect(() => {
     const checkUserLoggedIn = async () => {
@@ -32,21 +32,21 @@ export const AuthContextProvider = ({ children }) => {
       } catch (error) {
         if (error.response && error.response.status === 401) {
           toast.error("Not authorized. Please log in.");
-          window.location.href = "/users/login"; // Redirect to login page
+          window.location.href = "/users/login";
         } else {
           toast.error(error.message);
         }
         setAuthUser(null);
       } finally {
         setLoading(false);
-        setTriedToCheck(true); // Ensure the check is only tried once
+        setCheck(true);
       }
     };
 
-    if (!triedToCheck) {
+    if (!check) {
       checkUserLoggedIn();
     }
-  }, [triedToCheck]);
+  }, [check]);
 
   return (
     <AuthContext.Provider value={{ authUser, setAuthUser, loading }}>

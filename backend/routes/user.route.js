@@ -15,7 +15,7 @@ router.get("/profile/:username", Auth, getUserProfileAndRepos);
 //get profile likes
 router.get("/likes", Auth, getLikes);
 
-//liked a profile
+//liked a profile, username--github username
 router.post("/like/:username", Auth, likeProfile);
 
 router.get('/check', Auth, checkUser);

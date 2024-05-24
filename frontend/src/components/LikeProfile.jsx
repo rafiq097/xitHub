@@ -7,9 +7,9 @@ const LikeProfile = ({ userProfile }) => {
 	const { authUser } = useAuthContext();
 
 	const handleLikeProfile = async () => {
-		const token = localStorage.getItem("token"); // Retrieve the token from localStorage
+		const token = localStorage.getItem("token");
 		try {
-			const res = await axios.post(`http://localhost:5000/users/like/${userProfile.login}`, {}, {
+			const res = await axios.post(`http://localhost:5000/users/like/${userProfile.html_url}`, {}, {
 				headers: {
 					Authorization: `Bearer ${token}`,
 				},
