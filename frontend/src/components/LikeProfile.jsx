@@ -1,28 +1,33 @@
 import { FaHeart } from "react-icons/fa";
 import toast from "react-hot-toast";
+import axios from "axios"; // Ensure axios is imported
 import { useAuthContext } from "../context/AuthContext";
 
 const LikeProfile = ({ userProfile }) => {
 	const { authUser } = useAuthContext();
 
-	const isOwnProfile = authUser?.username === userProfile.login;
-
 	const handleLikeProfile = async () => {
+		const token = localStorage.getItem("token"); // Retrieve the token from localStorage
 		try {
-			const res = await fetch(`/like/${userProfile.login}`, {
-				method: "POST",
-				credentials: "include",
+			const res = await axios.post(`http://localhost:5000/users/like/${userProfile.login}`, {}, {
+				headers: {
+					Authorization: `Bearer ${token}`,
+				},
 			});
-			const data = await res.json();
+			
+			const data = res.data;
 
-			if (data.error) throw new Error(data.error);
+			if (data.error) {
+				throw new Error(data.error);
+			}
+
 			toast.success(data.message);
 		} catch (error) {
-			toast.error(error.message);
+			toast.error(error.response?.data?.message || error.message);
 		}
 	};
 
-	if (!authUser || isOwnProfile) return null;
+	if (!authUser) return null;
 
 	return (
 		<button
@@ -33,4 +38,5 @@ const LikeProfile = ({ userProfile }) => {
 		</button>
 	);
 };
+
 export default LikeProfile;

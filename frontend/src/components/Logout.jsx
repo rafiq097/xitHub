@@ -14,6 +14,7 @@ const Logout = () => {
 			console.log(data);
 			setAuthUser(null);
 			toast.success("Logged Out Successfully!");
+			window.location.href = process.env.CLIENT_BASE_URL;
 		} catch (error) {
 			console.log(`In Logout Error: ${error.message}`);
 			toast.error(error.message);

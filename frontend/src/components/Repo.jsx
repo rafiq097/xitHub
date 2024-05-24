@@ -50,7 +50,7 @@ const Repo = ({ repo }) => {
 					className='cursor-pointer bg-green-100 text-green-800 text-xs
         font-medium px-2.5 py-0.5 rounded-full flex items-center gap-1'
 				>
-					<FaCopy /> Clone
+					<FaCopy /> Copy URL
 				</span>
 			</div>
 

@@ -9,8 +9,13 @@ router.post("/login", login);
 
 router.get("/logout", logout);
 
-router.get("/profile/:username", getUserProfileAndRepos);
+//get profile info
+router.get("/profile/:username", Auth, getUserProfileAndRepos);
+
+//get profile likes
 router.get("/likes", Auth, getLikes);
+
+//liked a profile
 router.post("/like/:username", Auth, likeProfile);
 
 router.get('/check', Auth, checkUser);

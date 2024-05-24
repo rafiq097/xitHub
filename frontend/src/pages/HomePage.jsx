@@ -14,20 +14,29 @@ const HomePage = () => {
 
 	const [sortType, setSortType] = useState("recent");
 
-	const getUserProfileAndRepos = useCallback(async (username) => {
+	const getUserProfileAndRepos = useCallback(async (username = "rafiq097") => {
 		setLoading(true);
 		try {
-			const res = await fetch(`https://api.github.com/uesrs/${username}`);
-			const { repos, userProfile } = await res.json();
+			const userProfileRes = await fetch(`https://api.github.com/users/${username}`);
+			if (!userProfileRes.ok) {
+				throw new Error("Failed to fetch user profile");
+			}
+			const userProfile = await userProfileRes.json();
 
-			repos.sort((a, b) => new Date(b.created_at) - new Date(a.created_at)); //descending, recent first
+			const reposRes = await fetch(userProfile.repos_url);
+			if (!reposRes.ok) {
+				throw new Error("Failed to fetch user repositories");
+			}
+			const repos = await reposRes.json();
+
+			repos.sort((a, b) => new Date(b.created_at) - new Date(a.created_at)); // descending, recent first
 
 			setRepos(repos);
 			setUserProfile(userProfile);
 
 			return { userProfile, repos };
 		} catch (error) {
-			toast.error(error.message);
+			toast.error(error.message + " in HomePage catch");
 		} finally {
 			setLoading(false);
 		}
@@ -44,21 +53,23 @@ const HomePage = () => {
 		setRepos([]);
 		setUserProfile(null);
 
-		const { userProfile, repos } = await getUserProfileAndRepos(username);
+		const result = await getUserProfileAndRepos(username);
 
-		setUserProfile(userProfile);
-		setRepos(repos);
+		if (result && result.userProfile && result.repos) {
+			setUserProfile(result.userProfile);
+			setRepos(result.repos);
+		}
 		setLoading(false);
 		setSortType("recent");
 	};
 
 	const onSort = (sortType) => {
 		if (sortType === "recent") {
-			repos.sort((a, b) => new Date(b.created_at) - new Date(a.created_at)); //descending, recent first
+			repos.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
 		} else if (sortType === "stars") {
-			repos.sort((a, b) => b.stargazers_count - a.stargazers_count); //descending, most stars first
+			repos.sort((a, b) => b.stargazers_count - a.stargazers_count);
 		} else if (sortType === "forks") {
-			repos.sort((a, b) => b.forks_count - a.forks_count); //descending, most forks first
+			repos.sort((a, b) => b.forks_count - a.forks_count);
 		}
 		setSortType(sortType);
 		setRepos([...repos]);
@@ -70,7 +81,6 @@ const HomePage = () => {
 			{repos.length > 0 && <SortRepos onSort={onSort} sortType={sortType} />}
 			<div className='flex gap-4 flex-col lg:flex-row justify-center items-start'>
 				{userProfile && !loading && <ProfileInfo userProfile={userProfile} />}
-
 				{!loading && <Repos repos={repos} />}
 				{loading && <Spinner />}
 			</div>
