@@ -11,6 +11,8 @@ import { useAuthContext } from "../context/AuthContext";
 
 const HomePage = () => {
 	const { authUser } = useAuthContext();
+	if(!authUser)
+		window.location.href = "/login";
 
 	const [userProfile, setUserProfile] = useState(null);
 	const [repos, setRepos] = useState([]);
@@ -22,7 +24,7 @@ const HomePage = () => {
 		setLoading(true);
 		try {
 			const userProfileRes = await fetch(`https://api.github.com/users/${username}`);
-			if (!userProfileRes.ok) {
+			if (userProfileRes.status !== 200) {
 				throw new Error("Failed to fetch user profile");
 			}
 			const userProfile = await userProfileRes.json();
@@ -40,7 +42,7 @@ const HomePage = () => {
 
 			return { userProfile, repos };
 		} catch (error) {
-			toast.error(error.message + " in HomePage catch");
+			toast.error(error.message + "\nPlease enter correct username");
 		} finally {
 			setLoading(false);
 		}

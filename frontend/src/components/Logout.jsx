@@ -20,7 +20,7 @@ const Logout = () => {
 			toast.error(error.message);
 		}
 		finally{
-			window.location.href = "http://localhost:5173";
+			window.location.href = "http://localhost:5173/login";
 		}
 	};
 
