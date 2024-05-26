@@ -7,7 +7,7 @@ import HomePage from "./pages/HomePage";
 import ExplorePage from "./pages/ExplorePage";
 import LikesPage from "./pages/LikesPage";
 
-import Sidebar from "./components/Sidebar";
+import Navbar from "./components/Navbar.jsx";
 import { useAuthContext } from "./context/AuthContext";
 
 function App() {
@@ -17,9 +17,9 @@ function App() {
 	if (loading) return null;
 
 	return (
-		<div className='flex'>
-			<Sidebar />
-			<div className='max-w-5xl my-5 text-white mx-auto transition-all duration-300 flex-1'>
+		<div className='flex flex-col min-h-screen'>
+			<Navbar />
+			<div className='max-w-5xl mt-0 text-white mx-auto transition-all duration-300 flex-1'>
 				<Routes>
 					<Route path='/' element={<HomePage />} />
 					<Route path='/login' element={!authUser ? <LoginPage /> : <Navigate to={"/"} />} />

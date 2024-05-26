@@ -1,5 +1,5 @@
 import express from "express";
-import { signup, login, logout, checkUser, getLikes, getUserProfileAndRepos, likeProfile } from "../controllers/user.controller.js";
+import { signup, login, logout, checkUser, getLikes, getUserProfileAndRepos, likeProfile, disLikeProfile } from "../controllers/user.controller.js";
 import { Auth } from "../middlewares/auth.js";
 
 const router = express.Router();
@@ -17,6 +17,7 @@ router.get("/likes", Auth, getLikes);
 
 //liked a profile, username--github username
 router.post("/like/:username", Auth, likeProfile);
+router.post("/dislike/:username", Auth, disLikeProfile);
 
 router.get('/check', Auth, checkUser);
 

@@ -14,7 +14,7 @@ export const AuthContextProvider = ({ children }) => {
   const [check, setCheck] = useState(false);
 
   useEffect(() => {
-    const checkUserLoggedIn = async () => {
+    const checkUserLoggedIn = async (e) => {
       setLoading(true);
       // if(check){  
         try {
@@ -33,6 +33,7 @@ export const AuthContextProvider = ({ children }) => {
         }
         catch (error) {
           if (error.response && error.response.status === 401) {
+            e.preventDefault();
             toast.error("Not authorized. Please log in.");
             window.location.href = "http://localhost:5173/login";
           } else {

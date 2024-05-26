@@ -8,16 +8,25 @@ const LikeProfile = ( {userProfile} ) => {
 	console.log('LikeProfile.userProfile', userProfile);
 
 	const handleLikeProfile = async () => {
+		if (!authUser)
+		{
+			toast.error("Please Login to Like");
+			return;
+		}
+
 		const token = localStorage.getItem("token");
+		// console.log(token);
 		try {
-			console.log(userProfile.userProfile.userProfile.login);
-			const res = await axios.post(`http://localhost:5000/users/like/${userProfile.userProfile.userProfile.login}`, {username : userProfile.userProfile.userProfile.login, userProfile: userProfile.userProfile.userProfile}, {
+			console.log(userProfile.userProfile.login);
+			const res = await axios.post(`http://localhost:5000/users/like/${userProfile.userProfile.login}`, {username : userProfile.userProfile.login, userProfile: userProfile.userProfile}, {
 				headers: {
 					Authorization: `Bearer ${token}`,
 				},
 			});
 			if(res.status === 400)
+			{
 				toast.error("User already liked");
+			}
 				
 			const data = res.data;
 
@@ -25,13 +34,12 @@ const LikeProfile = ( {userProfile} ) => {
 				throw new Error(data.error);
 			}
 
-			toast.success(data.message);
+			toast.success("User Liked!");
 		} catch (error) {
 			toast.error(error.response?.data?.message || error.message);
 		}
 	};
 
-	// if (!authUser) return null;
 
 	return (
 		<button

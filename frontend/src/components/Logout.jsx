@@ -25,18 +25,23 @@ const Logout = () => {
 	};
 
 	return (
-		<>
-			{/* <img src={authUser?.avatarUrl} className='w-10 h-10 rounded-full border border-gray-800' /> */}
-			<img src="" alt="logout" className='w-10 h-10 rounded-full border border-gray-800' />
-
-			<div
-				className='cursor-pointer flex items-center p-2 rounded-lg bg-glass mt-auto border border-gray-800'
-				onClick={handleLogout}
-			>
-				<MdLogout size={22} />
-			</div>
-		</>
-	);
+		<div className="flex items-center space-x-3">
+		  {authUser?.avatarUrl && (
+			<img
+			  src={authUser.avatarUrl}
+			  alt="Avatar"
+			  className="w-10 h-10 rounded-full border border-gray-800"
+			/>
+		  )}
+		  <button
+			className="flex items-center"
+			onClick={handleLogout}
+		  >
+			<span>Logout</span>
+			<MdLogout size={22} />
+		  </button>
+		</div>
+	  );
 };
 
 export default Logout;
