@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { FaHeart, FaRegHeart } from "react-icons/fa";
 import toast from "react-hot-toast";
 import axios from "axios";
@@ -6,8 +6,31 @@ import { useAuthContext } from "../context/AuthContext";
 
 const LikeProfile = ({ userProfile }) => {
   const { authUser } = useAuthContext();
-  console.log("LikeProfile.userProfile", userProfile);
   const [liked, setLiked] = useState(false);
+
+  const getLikedStatus = useCallback(async () => {
+    if (!authUser) {
+      return;
+    }
+
+    try {
+      const token = localStorage.getItem("token");
+      const res = await axios.get(`http://localhost:5000/users/likestatus/${userProfile.userProfile.login}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      setLiked(res.status === 200);
+
+    } catch (error) {
+      console.log(error.message);
+    }
+  }, [authUser, userProfile.userProfile.login]);
+
+  useEffect(() => {
+    getLikedStatus();
+  }, [getLikedStatus]);
 
   const handleLikeProfile = async () => {
     if (!authUser) {

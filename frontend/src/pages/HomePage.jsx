@@ -12,8 +12,6 @@ import { useAuthContext } from "../context/AuthContext";
 
 const HomePage = () => {
 	const { authUser } = useAuthContext();
-	// const { user } = useParams();
-	// const navigate = useNavigate();
 
 	if(!authUser)
 		window.location.href = "/login";
@@ -21,18 +19,23 @@ const HomePage = () => {
 	const [userProfile, setUserProfile] = useState(null);
 	const [repos, setRepos] = useState([]);
 	const [loading, setLoading] = useState(false);
-
+	
 	const [sortType, setSortType] = useState("recent");
 
 	const getUserProfileAndRepos = useCallback(async (username = "") => {
+
 		setLoading(true);
 		try {
 			let user;
 			console.log(user);
 			user = localStorage.getItem("user");
+			localStorage.removeItem("user");
 			console.log(user);
 			if(!username)
 				username = user;
+
+			if(!username)
+				return;
 
 			console.log(username);
 			const userProfileRes = await fetch(`https://api.github.com/users/${username}`);

@@ -10,9 +10,9 @@ const Repo = ({ repo }) => {
 	const handleCloneClick = async (repo) => {
 		try {
 			await navigator.clipboard.writeText(repo.clone_url);
-			toast.success("Repo URL cloned to clipboard");
+			toast.success("Copied!");
 		} catch (error) {
-			toast.error("Clipboard write failed. ");
+			toast.error("Failed to Copy");
 		}
 	};
 

@@ -2,7 +2,7 @@ import fetch from 'node-fetch';
 
 export const explorePopularRepos = async (req, res) => {
     const { language } = req.params;
-
+    console.log("IN Explore control");
     try
     {
         // 5000 requests per hour for authenticated requests
