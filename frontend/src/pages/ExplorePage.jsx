@@ -4,7 +4,6 @@ import Spinner from "../components/Spinner";
 import Repos from "../components/Repos";
 
 const ExplorePage = () => {
-	// https://api.github.com/search/repositories?q=language:javascript&sort=stars&order=desc&per_page=10
 	const [loading, setLoading] = useState(false);
 	const [repos, setRepos] = useState([]);
 	const [selectedLanguage, setSelectedLanguage] = useState("");

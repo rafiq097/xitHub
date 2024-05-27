@@ -123,6 +123,7 @@ export const likeProfile = async (req, res) => {
 
 export const disLikeProfile = async (req, res) => {
     try {
+        console.log("in disklike");
         const { username } = req.params;
         console.log("username" , username);
         console.log("req user", req.user);
@@ -134,6 +135,10 @@ export const disLikeProfile = async (req, res) => {
             if (index > -1) {
                 user.likedProfiles.splice(index, 1);
                 // return res.status(200).json({ message: "User Disliked" });
+            }
+            else
+            {
+                res.status(404).json({ message: "User not found" });
             }
         }
 

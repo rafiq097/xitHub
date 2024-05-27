@@ -6,7 +6,7 @@ const SortRepos = ({ onSort, sortType }) => {
 	];
 
 	return (
-		<div className='mb-2 flex justify-center lg:justify-end'>
+		<div className='mb-2 ml-16 flex justify-left lg:justify-center'>
 			{BUTTONS.map((button) => (
 				<button
 					key={button.type}

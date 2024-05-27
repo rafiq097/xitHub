@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import toast from "react-hot-toast";
 
 import ProfileInfo from "../components/ProfileInfo";
@@ -11,6 +12,9 @@ import { useAuthContext } from "../context/AuthContext";
 
 const HomePage = () => {
 	const { authUser } = useAuthContext();
+	// const { user } = useParams();
+	// const navigate = useNavigate();
+
 	if(!authUser)
 		window.location.href = "/login";
 
@@ -20,9 +24,17 @@ const HomePage = () => {
 
 	const [sortType, setSortType] = useState("recent");
 
-	const getUserProfileAndRepos = useCallback(async (username = "rafiq097") => {
+	const getUserProfileAndRepos = useCallback(async (username = "") => {
 		setLoading(true);
 		try {
+			let user;
+			console.log(user);
+			user = localStorage.getItem("user");
+			console.log(user);
+			if(!username)
+				username = user;
+
+			console.log(username);
 			const userProfileRes = await fetch(`https://api.github.com/users/${username}`);
 			if (userProfileRes.status !== 200) {
 				throw new Error("Failed to fetch user profile");
