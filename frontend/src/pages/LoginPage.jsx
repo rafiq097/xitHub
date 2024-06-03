@@ -8,20 +8,21 @@ const LoginPage = () => {
 
 	const loginUser = async (userData) => {
 		try {
-			const response = await axios.post("http://localhost:5000/users/login", userData);
-			if (response.status != 200) {
+			const response = await axios.post("/users/login", userData);
+            
+			const data = response.data;
+
+            if(response.status === 200){
+				localStorage.setItem('token', data.token);
+				toast.success("Login Successful...");
+				return data;
+            }
+		} catch (error) {
+			if (error.response && error.response.status === 400) {
+				toast.error("Invalid credentials");
+			} else {
 				toast.error("Failed to Login. Please try again");
 			}
-            if(response.status === 400)
-                toast.error("Invalid credentials");
-                
-			const data = response.data;
-			localStorage.setItem('token', data.token);
-            toast.success("Login Successful...");
-			return data;
-		} catch (error) {
-			// throw new Error(error.message);
-            toast.error("Login Error", error);
 		}
 	};
 	
@@ -40,19 +41,19 @@ const LoginPage = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            await loginUser(formData);
-			window.location.href = "/";
-        }
-		catch (error) {
-            toast.error(error.message);
+            const data = await loginUser(formData);
+			if (data) {
+				window.location.href = "/";
+			}
+        } catch (error) {
+            toast.error("Login Error");
         }
     };
 
     return (
-        <div className="flex items-center justify-center min-h-screen">
-            <div className="max-w-md w-full bg-clip-padding backdrop-filter backdrop-blur-md bg-opacity-10 
-		hover:bg-gray-600/10 border border-gray-800 text-white shadow-md rounded-lg p-8">
-                <h1 className="text-2xl font-bold mb-4">Create Account</h1>
+        <div className="flex items-center justify-center min-h-screen p-4 sm:p-8 md:p-12 lg:p-16">
+            <div className="w-full max-w-md bg-clip-padding backdrop-filter backdrop-blur-md bg-opacity-10 hover:bg-gray-600/10 border border-gray-800 text-white shadow-md rounded-lg p-8">
+                <h1 className="text-2xl font-bold mb-4">Login Account</h1>
 
                 <form onSubmit={handleSubmit} className="space-y-4">
                     <input

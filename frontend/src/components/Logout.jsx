@@ -8,7 +8,7 @@ const Logout = () => {
 
 	const handleLogout = async () => {
 		try {
-			const res = await axios.get("http://localhost:5000/users/logout");
+			const res = await axios.get("/users/logout");
 			const data = res.data;
 			localStorage.removeItem("token");
 			console.log("Logout data", data);
@@ -20,7 +20,7 @@ const Logout = () => {
 			toast.error(error.message);
 		}
 		finally{
-			window.location.href = "http://localhost:5173/login";
+			window.location.href = "/login";
 		}
 	};
 
