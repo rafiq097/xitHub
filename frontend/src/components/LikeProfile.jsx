@@ -7,7 +7,7 @@ import { useAuthContext } from "../context/AuthContext";
 const LikeProfile = ({ userProfile }) => {
   const { authUser } = useAuthContext();
   const [liked, setLiked] = useState(false);
-
+  //setLiked(false);
   const getLikedStatus = useCallback(async () => {
     if (!authUser) {
       return;
@@ -21,8 +21,8 @@ const LikeProfile = ({ userProfile }) => {
         },
       });
 
-      setLiked(res.status === 200);
-      //setLiked(res.data.message === 'true');
+      //setLiked(res.status === 200);
+      setLiked(res.data.message);
 
     } catch (error) {
       console.log(error.message);
