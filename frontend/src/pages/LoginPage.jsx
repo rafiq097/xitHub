@@ -8,7 +8,7 @@ const LoginPage = () => {
 
 	const loginUser = async (userData) => {
 		try {
-			const response = await axios.post("/users/login", userData);
+			const response = await axios.post("http://localhost:5000/users/login", userData);
             
 			const data = response.data;
 

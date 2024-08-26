@@ -24,8 +24,6 @@ const app = express();
 const PORT = process.env.PORT || 5000;
 const __dirname = path.resolve();
 
-console.log("dirname", __dirname);
-
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cors());
@@ -48,10 +46,10 @@ connect();
 app.use("/users", userRoutes);
 app.use("/explore", exploreRoutes);
 
-app.use(express.static(path.join(__dirname, "../frontend/dist")));
+app.use(express.static(path.join(__dirname, "/frontend/dist")));
 
 app.get("*", (req, res) => {
-    res.sendFile(path.join(__dirname, "../frontend", "dist", "index.html"));
+    res.sendFile(path.join(__dirname, "/frontend", "dist", "index.html"));
 });
 
 app.listen(PORT, () => {
